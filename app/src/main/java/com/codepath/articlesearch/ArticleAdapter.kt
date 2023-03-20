@@ -27,8 +27,6 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
         holder.bind(article)
     }
 
-
-
     //override fun getItemCount() = 0
     override fun getItemCount() = articles.size
 
@@ -55,8 +53,17 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
 
         override fun onClick(v: View?) {
             // TODO: Get selected article
+            //absoluteAdapterPosition:: Returns the Adapter position of
+            // the item represented by this ViewHolder with respect to the RecyclerView's RecyclerView.Adapter
+            val article = articles[absoluteAdapterPosition]
+
 
             // TODO: Navigate to Details screen and pass selected article
+            // first parameter is the context, second is the class of the activity to launch
+            val intent = Intent(context, DetailActivity::class.java)
+            //creates a key value pair between the article data and it's key "ARTICLE_EXTRA"
+            intent.putExtra(ARTICLE_EXTRA, article)
+            context.startActivity(intent)
         }
     }
 }
