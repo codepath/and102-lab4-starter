@@ -41,7 +41,7 @@ class ArticleAdapter(private val context: Context, private val articles: List<Di
         }
 
         fun bind(article: DisplayArticle) {
-            titleTextView.text = article.headline?.main
+            titleTextView.text = article.headline
             abstractTextView.text = article.abstract
 
             Glide.with(context)

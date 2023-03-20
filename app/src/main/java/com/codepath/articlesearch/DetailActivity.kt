@@ -28,7 +28,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         // Get the extra from the Intent
-        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as DisplayArticle
+        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as Article
 
         // Set the title, byline, and abstract information from the article
         titleTV.text = article.headline?.main

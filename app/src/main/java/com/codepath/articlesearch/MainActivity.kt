@@ -3,12 +3,15 @@ package com.codepath.articlesearch
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.articlesearch.databinding.ActivityMainBinding
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import okhttp3.Headers
 import org.json.JSONException
@@ -45,6 +48,23 @@ class MainActivity : AppCompatActivity() {
             articlesRV.addItemDecoration(dividerItemDecoration)
         }
 
+        lifecycleScope.launch {
+            (application as ArticleApplication).db.articleDao().getAll().collect { databaseList ->
+                databaseList.map { entity ->
+                    DisplayArticle(
+                        entity.headline,
+                        entity.articleAbstract,
+                        entity.byline,
+                        entity.mediaImageUrl
+                    )
+                }.also { mappedList ->
+                    articles.clear()
+                    articles.addAll(mappedList)
+                    articleAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         val client = AsyncHttpClient()
         client.get(ARTICLE_SEARCH_URL, object : JsonHttpResponseHandler() {
             override fun onFailure(
@@ -67,7 +87,18 @@ class MainActivity : AppCompatActivity() {
 
                     // Save the articles
                     parsedJson.response?.docs?.let { list ->
-                        articles.addAll(list)
+                        lifecycleScope.launch(IO) {
+                            // Delete everything previously in the database
+                            (application as ArticleApplication).db.articleDao().deleteAll()
+                            (application as ArticleApplication).db.articleDao().insertAll(list.map {
+                                ArticleEntity(
+                                    headline = it.headline?.main,
+                                    articleAbstract = it.abstract,
+                                    byline = it.byline?.original,
+                                    mediaImageUrl = it.mediaImageUrl
+                                )
+                            })
+                        }
 
                         // Reload the screen
                         articleAdapter.notifyDataSetChanged()

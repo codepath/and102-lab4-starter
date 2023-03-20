@@ -16,11 +16,11 @@ data class SearchNewsResponse(
 @Serializable
 class BaseResponse (
     @SerialName("docs")
-    val docs: List<DisplayArticle>?)
+    val docs: List<Article>?)
 
 @Keep
 @Serializable
-data class DisplayArticle (
+data class Article (
     @SerialName("abstract")
     val abstract: String?,
 
