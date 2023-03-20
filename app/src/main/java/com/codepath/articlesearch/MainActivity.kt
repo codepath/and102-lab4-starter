@@ -19,14 +19,14 @@ fun createJson() = Json {
     useAlternativeNames = false
 }
 
-private const val TAG = "MainActivity/"
+private const val TAG = "MainActivity"
 private const val SEARCH_API_KEY = BuildConfig.API_KEY
 private const val ARTICLE_SEARCH_URL =
     "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
 
 class MainActivity : AppCompatActivity() {
     private val articles = mutableListOf<Article>()
-    private lateinit var articlesRecyclerView: RecyclerView
+    private lateinit var articlesRV: RecyclerView
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +36,13 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        articlesRecyclerView = findViewById(R.id.articles)
+        articlesRV = binding.articles
         val articleAdapter = ArticleAdapter(this, articles)
-        articlesRecyclerView.adapter = articleAdapter
+        articlesRV.adapter = articleAdapter
 
-        articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
+        articlesRV.layoutManager = LinearLayoutManager(this).also {
             val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
-            articlesRecyclerView.addItemDecoration(dividerItemDecoration)
+            articlesRV.addItemDecoration(dividerItemDecoration)
         }
 
         val client = AsyncHttpClient()
