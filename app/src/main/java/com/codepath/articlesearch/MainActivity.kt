@@ -25,7 +25,7 @@ private const val ARTICLE_SEARCH_URL =
     "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
 
 class MainActivity : AppCompatActivity() {
-    private val articles = mutableListOf<Article>()
+    private val articles = mutableListOf<DisplayArticle>()
     private lateinit var articlesRV: RecyclerView
     private lateinit var binding: ActivityMainBinding
 
