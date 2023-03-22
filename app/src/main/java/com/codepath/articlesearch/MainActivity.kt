@@ -23,6 +23,7 @@ private const val TAG = "MainActivity/"
 private val SEARCH_API_KEY = BuildConfig.API_KEY
 private val ARTICLE_SEARCH_URL =
     "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
+//    "https://api.themoviedb.org/3/movie/upcoming?api_key=${SEARCH_API_KEY}&language=en-US&page=1.json"
 
 class MainActivity : AppCompatActivity() {
     private val articles = mutableListOf<Article>()
