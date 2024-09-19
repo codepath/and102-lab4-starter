@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codepath.articlesearch.databinding.ActivityMainBinding
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.serialization.json.Json
 import okhttp3.Headers
 import org.json.JSONException
@@ -27,7 +29,8 @@ private const val ARTICLE_SEARCH_URL =
 class MainActivity : AppCompatActivity() {
     private lateinit var articlesRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
-
+    private val articles = mutableListOf<Article>()
+    private val articleAdapter = ArticleAdapter(this, articles)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
             val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
             articlesRecyclerView.addItemDecoration(dividerItemDecoration)
+
+
+            articlesRecyclerView.adapter = articleAdapter
         }
 
         val client = AsyncHttpClient()
@@ -58,10 +64,20 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "Successfully fetched articles: $json")
                 try {
                     // TODO: Create the parsedJSON
+                    val parsedJson = createJson().decodeFromString(
+                        SearchNewsResponse.serializer(),
+                        json.jsonObject.toString()
+                    )
+
 
                     // TODO: Do something with the returned json (contains article information)
 
+                    parsedJson.response?.docs?.let { list ->
+                        articles.addAll(list)
+                    }
+
                     // TODO: Save the articles and reload the screen
+                    articleAdapter.notifyDataSetChanged()
 
                 } catch (e: JSONException) {
                     Log.e(TAG, "Exception: $e")
