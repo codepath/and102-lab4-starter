@@ -26,11 +26,11 @@ class DetailActivity : AppCompatActivity() {
 
 
         // TODO: Get the extra from the Intent
-        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as Article
+        val article = intent.getSerializableExtra(ARTICLE_EXTRA) as DisplayArticle
 
         // TODO: Set the title, byline, and abstract information from the article
-        titleTextView.text = article.headline?.main
-        bylineTextView.text = article.byline?.original
+        titleTextView.text = article.headline
+        bylineTextView.text = article.byline
         abstractTextView.text = article.abstract
 
         // TODO: Load the media image
