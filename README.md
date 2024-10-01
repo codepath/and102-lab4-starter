@@ -19,6 +19,9 @@ Here's a walkthrough of implemented user stories:
 
 <img src='./ArticleSearch1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
+Here is the app operating under a database. (airplace mode)
+<img src='./ArticleSearchP2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ffmpeg 
 <!-- Recommended tools:
